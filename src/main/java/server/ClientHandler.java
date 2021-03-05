@@ -10,9 +10,11 @@ public class ClientHandler implements Runnable {
     private Socket socket;
     private PrintWriter pw;
     private Scanner scanner;
+    private String ip;
 
-    public ClientHandler(Socket socket) throws IOException {
+    public ClientHandler(Socket socket, String ip) throws IOException {
         this.socket = socket;
+        this.ip = ip;
         this.pw = new PrintWriter(socket.getOutputStream());
         this.scanner = new Scanner(socket.getInputStream());
     }
@@ -37,9 +39,9 @@ public class ClientHandler implements Runnable {
         pw.println("Du har lukket forbindelsen til chatrummet");
     }
 
-    private boolean commandHandler(String message){
+    private boolean commandHandler(String msg){
 
-        String[] messageSplit = message.split("#");
+        String[] messageSplit = msg.split("#");
 
         if (messageSplit.length == 1){
 

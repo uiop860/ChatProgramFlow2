@@ -28,6 +28,6 @@ public class ChatServerMain {
             System.out.println("Illegal inputs provided when starting the server!");
             return;
         }
-        server.startSever(port);
+        server.startSever(port,ip);
     }
 }
