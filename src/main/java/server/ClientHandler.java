@@ -84,7 +84,7 @@ public class ClientHandler implements Runnable {
                         String[] users = argument.split(",");
                         server.sendToSpecificUsers(message,users);
 
-                    }else if (message.equals("*")){
+                    }else {
                         server.sendToAllUser(message);
                     }
                     break;
