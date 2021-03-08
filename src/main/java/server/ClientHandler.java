@@ -29,7 +29,6 @@ public class ClientHandler implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private void clientHandler() throws IOException {
@@ -48,11 +47,9 @@ public class ClientHandler implements Runnable {
                     String message = scanner.nextLine();
                     keepRunning = commandHandler(message);
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
-                System.out.println("Illegal argument from user");
+                pw.println("CLOSE#1");
             }
         }
         userList.remove(this,name);
@@ -71,7 +68,8 @@ public class ClientHandler implements Runnable {
                 server.sendOnlineMessage();
                 return true;
             }else{
-                throw new IllegalArgumentException("Sent request does not obey protocol");
+                pw.println("CLOSE#1");
+                throw new IllegalArgumentException("CLOSE#1");
             }
         }
         return false;
@@ -91,7 +89,7 @@ public class ClientHandler implements Runnable {
         pw.println();
     }
 
-    private boolean commandHandler(String msg) throws InterruptedException {
+    private boolean commandHandler(String msg) {
 
         String[] messageSplit = msg.split("#");
 
@@ -102,7 +100,8 @@ public class ClientHandler implements Runnable {
                     //Stops while loop and closes connection
                     return false;
                 default:
-                    throw new IllegalArgumentException("Sent request does not obey protocol");
+                    pw.println("CLOSE#1");
+                    throw new IllegalArgumentException("CLOSE#1");
             }
 
         }else if (messageSplit.length == 3){
@@ -118,12 +117,12 @@ public class ClientHandler implements Runnable {
 
                     }else {
                         server.sendToAllUser(message, name);
-
                     }
                     break;
 
                 default:
-                    throw new IllegalArgumentException("Sent request does not obey protocol");
+                    pw.println("CLOSE#1");
+                    throw new IllegalArgumentException("CLOSE#1");
             }
         }
         return true;

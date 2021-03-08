@@ -30,7 +30,7 @@ public class MyRunnable implements Runnable {
             Assertions.assertEquals("Du er forbundet til chatrummet", received2);
             String received3 = scanner.nextLine();
             pw.println("");
-            Assertions.assertEquals();
+            /*Assertions.assertEquals();*/
 
 
             System.out.println("test passed");
