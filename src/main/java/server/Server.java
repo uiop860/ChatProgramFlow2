@@ -12,7 +12,7 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Socket socket;
-    ConcurrentHashMap<String, String> userList = new ConcurrentHashMap<>(10);
+    ConcurrentHashMap<Integer, String> userList = new ConcurrentHashMap<>(10);
 
 
     public void sendToSpecificUsers(String message, String[] users) {

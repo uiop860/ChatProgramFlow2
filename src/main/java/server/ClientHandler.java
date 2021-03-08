@@ -9,18 +9,22 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ClientHandler implements Runnable {
 
+    static int index = 5;
     private Socket socket;
     private String ip;
-    private ConcurrentHashMap<String,String> userList;
+    private ConcurrentHashMap<Integer,String> userList;
     private Server server;
     private PrintWriter pw;
     private Scanner scanner;
+    private int myId;
 
-    public ClientHandler(Socket socket, String ip, ConcurrentHashMap<String,String> userList,Server server) throws IOException {
+    public ClientHandler(Socket socket, String ip, ConcurrentHashMap<Integer,String> userList,Server server) throws IOException {
         this.socket = socket;
         this.ip = ip;
         this.userList = userList;
         this.server = server;
+        this.myId = index;
+        index++;
     }
 
     @Override
@@ -31,6 +35,10 @@ public class ClientHandler implements Runnable {
             e.printStackTrace();
         }
 
+    }
+
+    public int getMyId() {
+        return myId;
     }
 
     private void clientHandler() throws IOException {
@@ -67,7 +75,7 @@ public class ClientHandler implements Runnable {
             String token = messageSplit[1];
             if (command.equals("CONNECT")) {
                 //Adds username to ArrayBlockingQueue in Server class
-                userList.put(ip, token);
+                userList.put(myId, token);
                 return true;
             }else{
                 throw new IllegalArgumentException("Sent request does not obey protocol");
