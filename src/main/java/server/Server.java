@@ -22,6 +22,7 @@ public class Server {
 
     public void sendToAllUser(String message) {
 
+
     }
 
 

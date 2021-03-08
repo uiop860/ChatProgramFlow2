@@ -23,9 +23,6 @@ public class ClientHandler implements Runnable {
         this.server = server;
     }
 
-
-
-
     @Override
     public void run() {
         try {
@@ -38,22 +35,45 @@ public class ClientHandler implements Runnable {
 
     private void clientHandler() throws IOException {
         boolean keepRunning = true;
+        boolean userConnected;
         pw = new PrintWriter(socket.getOutputStream(), true);
         scanner = new Scanner(socket.getInputStream());
 
+        pw.println("Indtast CONNECT#XXXX");
+        userConnected = connectClient(scanner.nextLine());
 
-        pw.println("Du er forbundet til chatrummet");
-
-        while(keepRunning) {
-
-            String message = scanner.nextLine();
+        if (userConnected) {
+            pw.println("Du er forbundet til chatrummet");
             try {
-                keepRunning = commandHandler(message);
+                while (keepRunning) {
+                    String message = scanner.nextLine();
+                    keepRunning = commandHandler(message);
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+                System.out.println("Illegal argument from user");
             }
         }
-        pw.println("Du har lukket forbindelsen til chatrummet");
+        socket.close();
+    }
+
+    private boolean connectClient(String msg){
+        String[] messageSplit = msg.split("#");
+
+        if (messageSplit.length == 2){
+            String command = messageSplit[0];
+            String token = messageSplit[1];
+            if (command.equals("CONNECT")) {
+                //Adds username to ArrayBlockingQueue in Server class
+                userList.put(ip, token);
+                return true;
+            }else{
+                throw new IllegalArgumentException("Sent request does not obey protocol");
+            }
+        }
+        return false;
     }
 
     private boolean commandHandler(String msg) throws InterruptedException {
@@ -66,19 +86,6 @@ public class ClientHandler implements Runnable {
                 case "CLOSE":
                     //Stops while loop and closes connection
                     return false;
-                default:
-                    throw new IllegalArgumentException("Sent request does not obey protocol");
-            }
-
-        }else if (messageSplit.length == 2){
-            String command = messageSplit[0];
-            String token = messageSplit[1];
-            switch (command){
-                case "CONNECT":
-                    //Adds username to ArrayBlockingQueue in Server class
-                    userList.put(ip,token);
-                    break;
-
                 default:
                     throw new IllegalArgumentException("Sent request does not obey protocol");
             }
@@ -103,7 +110,6 @@ public class ClientHandler implements Runnable {
                     throw new IllegalArgumentException("Sent request does not obey protocol");
             }
         }
-
         return true;
     }
 }
