@@ -1,7 +1,6 @@
 package Test;
 
-import junit.framework.Assert;
-import server.ClientHandler;
+
 import server.Server;
 
 import java.io.IOException;
@@ -20,7 +19,7 @@ class ClientHandlerTest {
 
     String ip = "localhost";
     int port = 8088;
-    String logFile = "log.txt";  //Do we need this
+    String logFile = "log.txt";  
     Server server = new Server();
 
 
@@ -33,7 +32,7 @@ class ClientHandlerTest {
 
             pw.println("CONNECT#Sebastian");
             String received = scanner.nextLine();
-        
+
 
 
         } catch (IOException e) {
