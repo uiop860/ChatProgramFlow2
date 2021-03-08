@@ -12,7 +12,7 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Socket socket;
-    ConcurrentHashMap<Integer, String> userList = new ConcurrentHashMap<>(10);
+    ConcurrentHashMap<String, ClientHandler> userList = new ConcurrentHashMap<>(10);
 
 
     public void sendToSpecificUsers(String message, String[] users) {
@@ -22,9 +22,9 @@ public class Server {
 
     public void sendToAllUser(String message) {
 
+        userList.values().forEach(clientHandler ->{clientHandler.messageToAll(message);});
 
     }
-
 
     public void startSever(int port, String ip) throws IOException {
 
@@ -35,7 +35,7 @@ public class Server {
             socket = serverSocket.accept();      //Blocking call
             System.out.println("New client connected");
 
-            ClientHandler clientHandler = new ClientHandler(socket, ip, userList, this);
+            ClientHandler clientHandler = new ClientHandler(socket, userList, this);
 
             Thread thread = new Thread(clientHandler);
             thread.start();
