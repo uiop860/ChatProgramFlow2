@@ -11,27 +11,43 @@ import java.util.Scanner;
 import static junit.framework.Assert.assertEquals;
 
 
+class Runnabletest implements Runnable{
+    ClientHandlerTest c1test = new ClientHandlerTest();
+
+    @Override
+    public void run() {
+        try {
+            c1test.test();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+}
+
+
 class ClientHandlerTest {
-    String ip = "localhost";
-    int port = 8088;
-    String logFile = "log.txt";
-    Server server = new Server();
-
-
-
 
 
     public static void main(String[]args){
-        test();
+        try {
+            test();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
-
-    public static void test(){
+    public static void test() throws IOException {
     String ip = "localhost";
     int port = 8088;
     String logFile = "log.txt";
     Server server = new Server();
+
+   Thread testThread = new Thread();
+
+
+
 
         try {
             Socket socket = new Socket(ip, port);
@@ -49,11 +65,8 @@ class ClientHandlerTest {
             e.printStackTrace();
         }
     }
-
-
-
-
 }
+
 
 
 
