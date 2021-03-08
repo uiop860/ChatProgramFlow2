@@ -1,17 +1,14 @@
 package Test;
 
 
-import server.ClientHandler;
 import server.Server;
-
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
-
+import static junit.framework.Assert.assertEquals;
 
 
 class ClientHandlerTest {
@@ -43,6 +40,8 @@ class ClientHandlerTest {
 
             pw.println("CONNECT#Sebastian");
             String received = scanner.nextLine();
+            assertEquals("Du er forbundet til chatrummet", received);
+            pw.println();
 
 
             System.out.println("test passed");
