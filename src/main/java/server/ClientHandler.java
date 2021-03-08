@@ -9,29 +9,38 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ClientHandler implements Runnable {
 
     private Socket socket;
-    private PrintWriter pw;
-    private Scanner scanner;
     private String ip;
     private ConcurrentHashMap<String,String> userList;
     private Server server;
+    private PrintWriter pw;
+    private Scanner scanner;
 
     public ClientHandler(Socket socket, String ip, ConcurrentHashMap<String,String> userList,Server server) throws IOException {
         this.socket = socket;
         this.ip = ip;
         this.userList = userList;
         this.server = server;
-        this.pw = new PrintWriter(socket.getOutputStream());
-        this.scanner = new Scanner(socket.getInputStream());
     }
+
+
+
 
     @Override
     public void run() {
-        clientHandler();
+        try {
+            clientHandler();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    private void clientHandler(){
+    private void clientHandler() throws IOException {
         boolean keepRunning = true;
+        pw = new PrintWriter(socket.getOutputStream(), true);
+        scanner = new Scanner(socket.getInputStream());
+
+
         pw.println("Du er forbundet til chatrummet");
 
         while(keepRunning) {
