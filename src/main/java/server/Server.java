@@ -12,11 +12,9 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Socket socket;
-<<<<<<< HEAD
+
     static ConcurrentHashMap<String, String> userList = new ConcurrentHashMap<>(10);
-=======
-    ConcurrentHashMap<Integer, String> userList = new ConcurrentHashMap<>(10);
->>>>>>> 78a779e25fbba70435acdf5c623756347121fbd7
+
 
     static {
         userList.put(1,"Oliver");
