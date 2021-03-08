@@ -10,12 +10,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ClientHandler implements Runnable {
 
     private Socket socket;
-    private ConcurrentHashMap<String,ClientHandler> userList;
+    private ConcurrentHashMap<ClientHandler, String> userList;
     private Server server;
     private PrintWriter pw;
     private Scanner scanner;
+    private String name;
 
-    public ClientHandler(Socket socket, ConcurrentHashMap<String,ClientHandler> userList,Server server) throws IOException {
+    public ClientHandler(Socket socket, ConcurrentHashMap<ClientHandler, String> userList,Server server) throws IOException {
         this.socket = socket;
         this.userList = userList;
         this.server = server;
@@ -54,6 +55,7 @@ public class ClientHandler implements Runnable {
                 System.out.println("Illegal argument from user");
             }
         }
+        userList.remove(this,name);
         socket.close();
     }
 
@@ -62,10 +64,11 @@ public class ClientHandler implements Runnable {
 
         if (messageSplit.length == 2){
             String command = messageSplit[0];
-            String token = messageSplit[1];
+            name = messageSplit[1];
             if (command.equals("CONNECT")) {
                 //Adds username to ArrayBlockingQueue in Server class
-                userList.put(token, this);
+                userList.put(this,name);
+                server.sendOnlineMessage();
                 return true;
             }else{
                 throw new IllegalArgumentException("Sent request does not obey protocol");
@@ -74,8 +77,18 @@ public class ClientHandler implements Runnable {
         return false;
     }
 
-    public void messageToAll(String message){
-        pw.println(message);
+    public void messageToAll(String message, String senderName){
+        pw.println("MESSAGE#"+senderName+"#"+message);
+    }
+
+    public void sendOnlineMesage(){
+
+        pw.print("ONLINE#");
+        for(ClientHandler clientHandler : userList.keySet()){
+            pw.print(userList.get(clientHandler));
+            pw.print(",");
+        }
+        pw.println();
     }
 
     private boolean commandHandler(String msg) throws InterruptedException {
@@ -98,13 +111,14 @@ public class ClientHandler implements Runnable {
             String message = messageSplit[2];
 
             switch (command){
-                case "MESSAGE":
-                    if(!message.equals("*")){
+                case "SEND":
+                    if(!argument.equals("*")){
                         String[] users = argument.split(",");
                         server.sendToSpecificUsers(message,users);
 
                     }else {
-                        server.sendToAllUser(message);
+                        server.sendToAllUser(message, name);
+
                     }
                     break;
 
