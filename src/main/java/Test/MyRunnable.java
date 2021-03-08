@@ -19,9 +19,13 @@ public class MyRunnable implements Runnable {
                         Scanner scanner = new Scanner(socket.getInputStream());
                         PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
 
-                        pw.println("CONNECT#Sebastian");
+                        //pw.println("CONNECT#Sebastian");
                         String received = scanner.nextLine();
-                        assertEquals("Du er forbundet til chatrummet", received);
+                        assertEquals("Indtast CONNECT#XXXX", received);
+                        pw.println("CONNECT#Sebastian");
+                        String received1 = scanner.nextLine();
+                        assertEquals("Du er forbundet til chatrummet",received1);
+                        
 
 
 
