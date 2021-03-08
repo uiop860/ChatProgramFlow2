@@ -1,10 +1,13 @@
 package Test;
 
 
+import server.ClientHandler;
 import server.Server;
+
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -12,21 +15,29 @@ import java.util.Scanner;
 
 
 class ClientHandlerTest {
-
-    public static void main(String[]args){
-        ClientHandlerTest test1 = new ClientHandlerTest();
-    }
-
     String ip = "localhost";
     int port = 8088;
-    String logFile = "log.txt";  
+    String logFile = "log.txt";
     Server server = new Server();
 
 
 
-    {
+
+
+    public static void main(String[]args){
+        test();
+    }
+
+
+
+    public static void test(){
+    String ip = "localhost";
+    int port = 8088;
+    String logFile = "log.txt";
+    Server server = new Server();
+
         try {
-          Socket socket = new Socket(ip, port);
+            Socket socket = new Socket(ip, port);
             Scanner scanner = new Scanner(socket.getInputStream());
             PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
 
@@ -34,11 +45,12 @@ class ClientHandlerTest {
             String received = scanner.nextLine();
 
 
-
+            System.out.println("test passed");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
 
 
