@@ -19,6 +19,7 @@ public class Server {
     public void sendToAllUser(String message){
 
 
+
     }
 
     public void startSever(int port,String ip) throws IOException {
