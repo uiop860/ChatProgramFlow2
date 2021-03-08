@@ -1,6 +1,7 @@
 package Test;
 
 
+import org.junit.jupiter.api.Test;
 import server.Server;
 
 import java.io.IOException;
@@ -11,60 +12,38 @@ import java.util.Scanner;
 import static junit.framework.Assert.assertEquals;
 
 
-class Runnabletest implements Runnable{
-    ClientHandlerTest c1test = new ClientHandlerTest();
 
-    @Override
-    public void run() {
-        try {
-            c1test.test();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-}
 
 
 class ClientHandlerTest {
 
 
+
+
     public static void main(String[]args){
         try {
-            test();
+            Runtestserver();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
-    public static void test() throws IOException {
-    String ip = "localhost";
-    int port = 8088;
-    String logFile = "log.txt";
-    Server server = new Server();
-
-   Thread testThread = new Thread();
-
-
-
-
-        try {
-            Socket socket = new Socket(ip, port);
-            Scanner scanner = new Scanner(socket.getInputStream());
-            PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
-
-            pw.println("CONNECT#Sebastian");
-            String received = scanner.nextLine();
-            assertEquals("Du er forbundet til chatrummet", received);
-            pw.println();
+    public static void Runtestserver() throws IOException {
+        MyRunnable testrunnable = new MyRunnable();
+        Thread testThread = new Thread(testrunnable);
+        testThread.start();
+        String ip = "localhost";
+        int port = 8088;
+        String logFile = "log.txt";
+        Server server = new Server();
+        server.startSever(port, ip);
 
 
-            System.out.println("test passed");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
+
 }
 
 
