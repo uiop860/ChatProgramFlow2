@@ -5,6 +5,7 @@ import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -12,10 +13,10 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Socket socket;
-    static ConcurrentHashMap<String, ClientHandler> userList = new ConcurrentHashMap<>(10);
+    static ConcurrentHashMap<ClientHandler, String> userList = new ConcurrentHashMap<>(10);
 
 
-    static {
+   /* static {
         try {
             userList.put("Oliver",new ClientHandler(null,null,null));
             userList.put("Rasmus",new ClientHandler(null,null,null));
@@ -25,20 +26,27 @@ public class Server {
             e.printStackTrace();
         }
 
-    }
+    }*/
 
     public void sendToSpecificUsers(String message, String[] users) {
 
 
     }
 
-    public void sendToAllUser(String message) {
+    public void sendToAllUser(String message,String name) {
 
-        userList.values().forEach(clientHandler ->{clientHandler.messageToAll(message);});
+        userList.keySet().forEach(clientHandler ->{clientHandler.messageToAll(message,name);});
 
     }
 
-    public void startSever(int port, String ip) throws IOException {
+    public void sendOnlineMessage() {
+
+        userList.keySet().forEach(clientHandler -> {clientHandler.sendOnlineMesage();});
+
+
+    }
+
+    public void startSever(int port) throws IOException {
 
         serverSocket = new ServerSocket(port);
         System.out.println("Server started, listening on : " + port);
