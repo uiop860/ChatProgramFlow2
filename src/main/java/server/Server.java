@@ -12,15 +12,19 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Socket socket;
-
-    static ConcurrentHashMap<String, String> userList = new ConcurrentHashMap<>(10);
+    static ConcurrentHashMap<String, ClientHandler> userList = new ConcurrentHashMap<>(10);
 
 
     static {
-        userList.put(1,"Oliver");
-        userList.put(2,"Rasmus");
-        userList.put(3,"Sebastian");
-        userList.put(4,"Thias");
+        try {
+            userList.put("Oliver",new ClientHandler(null,null,null));
+            userList.put("Rasmus",new ClientHandler(null,null,null));
+            userList.put("Sebastian",new ClientHandler(null,null,null));
+            userList.put("Thias",new ClientHandler(null,null,null));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void sendToSpecificUsers(String message, String[] users) {
@@ -30,9 +34,9 @@ public class Server {
 
     public void sendToAllUser(String message) {
 
+        userList.values().forEach(clientHandler ->{clientHandler.messageToAll(message);});
 
     }
-
 
     public void startSever(int port, String ip) throws IOException {
 
@@ -43,7 +47,7 @@ public class Server {
             socket = serverSocket.accept();      //Blocking call
             System.out.println("New client connected");
 
-            ClientHandler clientHandler = new ClientHandler(socket, ip, userList, this);
+            ClientHandler clientHandler = new ClientHandler(socket, userList, this);
 
             Thread thread = new Thread(clientHandler);
             thread.start();
