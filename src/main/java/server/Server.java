@@ -12,8 +12,18 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Socket socket;
-    ConcurrentHashMap<String, String> userList = new ConcurrentHashMap<>(10);
+<<<<<<< HEAD
+    static ConcurrentHashMap<String, String> userList = new ConcurrentHashMap<>(10);
+=======
+    ConcurrentHashMap<Integer, String> userList = new ConcurrentHashMap<>(10);
+>>>>>>> 78a779e25fbba70435acdf5c623756347121fbd7
 
+    static {
+        userList.put(1,"Oliver");
+        userList.put(2,"Rasmus");
+        userList.put(3,"Sebastian");
+        userList.put(4,"Thias");
+    }
 
     public void sendToSpecificUsers(String message, String[] users) {
 
