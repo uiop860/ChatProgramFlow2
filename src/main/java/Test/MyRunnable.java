@@ -23,17 +23,20 @@ public class MyRunnable implements Runnable {
 
             String received = scanner.nextLine();
             Assertions.assertEquals("Indtast CONNECT#XXXX", received);
+            System.out.println("Test 1 passed");
             pw.println("CONNECT#Sebastian");
             String received1 = scanner.nextLine();
             Assertions.assertEquals("ONLINE#Sebastian,", received1);
+            System.out.println("Test 2 passed");
             String received2 = scanner.nextLine();
             Assertions.assertEquals("Du er forbundet til chatrummet", received2);
-            String received3 = scanner.nextLine();
-            pw.println("");
-            Assertions.assertEquals();
+            System.out.println("Test 3 passed");
+            pw.println("SEND#*#Hej med dig");
+            String received4 = scanner.nextLine();
+            Assertions.assertEquals("MESSAGE#Sebastian#Hej med dig", received4);
+            System.out.println("Test 4 passed");
 
-
-            System.out.println("test passed");
+            System.out.println("ALL test passed");
         } catch (IOException e) {
             e.printStackTrace();
         }
