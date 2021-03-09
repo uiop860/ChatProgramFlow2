@@ -16,7 +16,7 @@ public class ClientHandler implements Runnable {
     private Scanner scanner;
     private String name;
 
-    public ClientHandler(Socket socket, ConcurrentHashMap<ClientHandler, String> userList,Server server) throws IOException {
+    public ClientHandler(Socket socket, ConcurrentHashMap<ClientHandler, String> userList, Server server) throws IOException {
         this.socket = socket;
         this.userList = userList;
         this.server = server;
@@ -52,22 +52,22 @@ public class ClientHandler implements Runnable {
                 pw.println("CLOSE#1");
             }
         }
-        userList.remove(this,name);
+        userList.remove(this, name);
         socket.close();
     }
 
-    private boolean connectClient(String msg){
+    private boolean connectClient(String msg) {
         String[] messageSplit = msg.split("#");
 
-        if (messageSplit.length == 2){
+        if (messageSplit.length == 2) {
             String command = messageSplit[0];
             name = messageSplit[1];
             if (command.equals("CONNECT")) {
                 //Adds username to ArrayBlockingQueue in Server class
-                userList.put(this,name);
+                userList.put(this, name);
                 server.sendOnlineMessage();
                 return true;
-            }else{
+            } else {
                 pw.println("CLOSE#1");
                 throw new IllegalArgumentException("CLOSE#1");
             }
@@ -75,14 +75,15 @@ public class ClientHandler implements Runnable {
         return false;
     }
 
-    public void messageToAll(String message, String senderName){
-        pw.println("MESSAGE#"+senderName+"#"+message);
+    public void messageToAll(String message, String senderName) {
+        pw.println("MESSAGE#" + senderName + "#" + message);
     }
 
-    public void sendOnlineMesage(){
+
+    public void sendOnlineMesage() {
 
         pw.print("ONLINE#");
-        for(ClientHandler clientHandler : userList.keySet()){
+        for (ClientHandler clientHandler : userList.keySet()) {
             pw.print(userList.get(clientHandler));
             pw.print(",");
         }
@@ -93,9 +94,9 @@ public class ClientHandler implements Runnable {
 
         String[] messageSplit = msg.split("#");
 
-        if (messageSplit.length == 1){
+        if (messageSplit.length == 1) {
             String command = messageSplit[0];
-            switch (command){
+            switch (command) {
                 case "CLOSE":
                     //Stops while loop and closes connection
                     return false;
@@ -104,23 +105,23 @@ public class ClientHandler implements Runnable {
                     throw new IllegalArgumentException("CLOSE#1");
             }
 
-        }else if (messageSplit.length == 3){
+        } else if (messageSplit.length == 3) {
             String command = messageSplit[0];
             String argument = messageSplit[1];
             String message = messageSplit[2];
 
-            switch (command){
+            switch (command) {
                 case "SEND":
-                    if(!argument.equals("*")){
-                        String[] users = argument.split(",");
-                        server.sendToSpecificUsers(message,users);
-
-                    }else {
+                    if (argument.equals("*")) {
                         server.sendToAllUser(message, name);
-                    }
-                    break;
-
-                default:
+                    } else {
+                        String[] parts = argument.split(",");
+                        if (parts.length == 0) {
+                            server.sendToSpecificUsers(message, name);
+                        } else {
+                            server.sendToSpecificUsers(message, name);
+                        }
+                    } default:
                     pw.println("CLOSE#1");
                     throw new IllegalArgumentException("CLOSE#1");
             }

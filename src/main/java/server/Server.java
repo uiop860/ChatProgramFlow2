@@ -15,10 +15,18 @@ public class Server {
     private Socket socket;
     static ConcurrentHashMap<ClientHandler, String> userList = new ConcurrentHashMap<>(10);
 
+    static ConcurrentHashMap<String,ClientHandler> userLis = new ConcurrentHashMap<>(10);
 
-    public void sendToSpecificUsers(String message, String[] users) {
 
 
+
+
+    public void sendToSpecificUsers(String message, String users) {
+        String[] usersToSendTo = users.split(",");
+        for(String user: usersToSendTo){
+            ClientHandler ch =  userLis.get(user);
+            ch.messageToAll(message,users);
+        }
     }
 
     public void sendToAllUser(String message,String name) {
