@@ -17,12 +17,11 @@ public class Server implements Runnable {
 
     @Override
     public void run() {
-
-
+        sendOnlineMessage();
     }
 
-
-
+    private void sendToAllUser() {
+    }
 
 
     public void sendToSpecificUsers(String message, String users) {
