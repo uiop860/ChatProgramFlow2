@@ -112,7 +112,7 @@ public class ClientHandler implements Runnable {
 
             switch (command) {
                 case "SEND":
-                    if (!argument.equals("*")) {
+                    if (argument.equals("*")) {
                         server.sendToAllUser(message, name);
                     } else {
                         String[] parts = argument.split(",");
@@ -121,7 +121,9 @@ public class ClientHandler implements Runnable {
                         } else {
                             server.sendToSpecificUsers(message, name);
                         }
-                    } default:
+                    }
+                    break;
+                default:
                     pw.println("CLOSE#1");
                     throw new IllegalArgumentException("CLOSE#1");
             }
