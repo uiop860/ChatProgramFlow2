@@ -6,20 +6,26 @@ import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
+
+
 public class ClientHandler implements Runnable {
 
     private Socket socket;
-    private ConcurrentHashMap<String,ClientHandler> userList;
     private Server server;
+    private ConcurrentHashMap<String, ClientHandler> userList; //=new ConcurrentHashMap<>(10);
     public String name;
     private PrintWriter pw;
     private Scanner scanner;
-    sThread serverThread = new sThread(userList);
+    sThread serverThread;
+
     public ClientHandler(Socket socket, ConcurrentHashMap<String,ClientHandler> userList, Server server) throws IOException {
-        this.socket = socket;
         this.server = server;
+        this.socket = socket;
         this.userList = userList;
+        serverThread= new sThread(userList);
     }
+
+
 
     @Override
     public void run() {
@@ -29,8 +35,15 @@ public class ClientHandler implements Runnable {
             e.printStackTrace();
         }
     }
+    private void startworker(){
+        sThread stWorker = new sThread(userList);
+        Thread st = new Thread(stWorker);
+        st.start();
+    }
 
     private void clientHandler() throws IOException {
+        startworker();
+        //System.out.println(userList.keySet());
         boolean keepRunning = true;
         boolean userConnected;
         pw = new PrintWriter(socket.getOutputStream(), true);
@@ -56,9 +69,8 @@ public class ClientHandler implements Runnable {
     }
 
 
-    private boolean connectClient(String msg) {
+    private boolean connectClient( String msg) {
         String[] messageSplit = msg.split("#");
-
         if (messageSplit.length == 2) {
             String command = messageSplit[0];
             name = messageSplit[1];
@@ -85,14 +97,11 @@ public class ClientHandler implements Runnable {
     }*/
 
 
-    public void sendOnlineMesage() {
+    public void sendOnlineMesage() throws InterruptedException {
         pw.print("ONLINE#");
         userList.keySet().forEach(key ->pw.print(key+","));
         pw.println();
-        sThread stWorker = new sThread(userList);
-        Thread st = new Thread(stWorker);
-        st.start();
-    }
+          }
 
     private boolean commandHandler(String msg) {
 

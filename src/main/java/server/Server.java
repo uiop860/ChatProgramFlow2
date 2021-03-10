@@ -14,10 +14,14 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Socket socket;
-    private ConcurrentHashMap<String, ClientHandler> userList = new ConcurrentHashMap<>(10);
+    public  ConcurrentHashMap<String, ClientHandler> userList = new ConcurrentHashMap<>(10);
+
+
+
 
 
     public void startSever(int port) throws IOException {
+
 
 
         serverSocket = new ServerSocket(port);
@@ -27,7 +31,6 @@ public class Server {
             socket = serverSocket.accept();      //Blocking call
             System.out.println("New client connected");
             ClientHandler clientHandler = new ClientHandler(socket, userList, this);
-
             Thread thread = new Thread(clientHandler);
             thread.start();
 

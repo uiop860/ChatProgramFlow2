@@ -20,6 +20,8 @@ class sThread implements Runnable {
 
     @Override
     public void run() {
+
+
         sendToAllUser(message, name);
         sendOnlineMessage();
         sendToSpecificUser(message, name, users);
@@ -37,7 +39,11 @@ class sThread implements Runnable {
     public  void sendOnlineMessage() {
 
         userList.values().forEach(clientHandler -> {
-            clientHandler.sendOnlineMesage();
+            try {
+                clientHandler.sendOnlineMesage();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         });
 
     }
