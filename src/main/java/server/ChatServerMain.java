@@ -7,14 +7,14 @@ public class ChatServerMain {
     public static void main(String[] args) throws IOException {
 
         int port = 2345;
-        Server server = new Server();
+        int capacity = 10;
 
-        if(args.length > 0){
+
+        if (args.length > 0) {
             try {
-                if (args.length == 1){
+                if (args.length == 1) {
                     port = Integer.parseInt(args[0]);
-                }
-                else {
+                } else {
                     throw new IllegalArgumentException("Server not provided with the right arguments\n type: ip port log");
                 }
             } catch (NumberFormatException ne) {
@@ -23,6 +23,7 @@ public class ChatServerMain {
             }
 
         }
-        server.startSever(port);
+        Server server = new Server(port, capacity);
+        server.runServer();
     }
 }

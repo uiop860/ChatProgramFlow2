@@ -26,8 +26,8 @@ class ClientHandlerTest {
         testThread.start();
         int port = 8088;
         String logFile = "log.txt";
-        Server server = new Server();
-        server.startSever(port);
+        Server server = new Server(port, 10);
+        server.runServer();
 
 
     }

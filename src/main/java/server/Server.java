@@ -14,17 +14,17 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Socket socket;
-    public  ConcurrentHashMap<String, ClientHandler> userList = new ConcurrentHashMap<>(10);
+    private int port;
+    public ConcurrentHashMap<String, ClientHandler> userList;
 
 
-
-
-
-    public void startSever(int port) throws IOException {
-
-
-
+    public Server(int port, int capacity) throws IOException {
+        this.port=port;
         serverSocket = new ServerSocket(port);
+        userList = new ConcurrentHashMap<>(capacity);
+    }
+
+    public void runServer() throws IOException {
         System.out.println("Server started, listening on : " + port);
         while (true) {
             System.out.println("Waiting for a client");
@@ -35,5 +35,6 @@ public class Server {
             thread.start();
 
         }
+
     }
 }
