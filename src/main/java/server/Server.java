@@ -9,13 +9,17 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Server {
+public class Server implements Runnable {
 
     private ServerSocket serverSocket;
     private Socket socket;
-
-
     static ConcurrentHashMap<String,ClientHandler> userList = new ConcurrentHashMap<>(10);
+
+    @Override
+    public void run() {
+
+
+    }
 
 
 
@@ -48,7 +52,9 @@ public class Server {
 
     }
 
+
     public void startSever(int port) throws IOException {
+
 
         serverSocket = new ServerSocket(port);
         System.out.println("Server started, listening on : " + port);
@@ -56,12 +62,14 @@ public class Server {
             System.out.println("Waiting for a client");
             socket = serverSocket.accept();      //Blocking call
             System.out.println("New client connected");
-
             ClientHandler clientHandler = new ClientHandler(socket,userList,this);
 
             Thread thread = new Thread(clientHandler);
             thread.start();
 
         }
+
     }
+
+
 }
