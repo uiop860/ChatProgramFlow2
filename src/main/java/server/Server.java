@@ -9,19 +9,14 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Server implements Runnable {
+public class Server  {
 
     private ServerSocket serverSocket;
     private Socket socket;
-    static ConcurrentHashMap<String,ClientHandler> userList = new ConcurrentHashMap<>(10);
+   private ConcurrentHashMap<String,ClientHandler> userList = new ConcurrentHashMap<>(10);
 
-    @Override
-    public void run() {
-        sendOnlineMessage();
-    }
 
-    private void sendToAllUser() {
-    }
+
 
 
     public void sendToSpecificUsers(String message, String users) {
@@ -32,17 +27,6 @@ public class Server implements Runnable {
         }
     }
 
-    public void sendToAllUser(String message,String name) {
-
-        userList.values().forEach(clientHandler ->{clientHandler.messageToAll(message,name);});
-
-    }
-
-    public void sendOnlineMessage() {
-
-       userList.values().forEach(clientHandler -> {clientHandler.sendOnlineMesage();});
-
-    }
 
 
     public void startSever(int port) throws IOException {

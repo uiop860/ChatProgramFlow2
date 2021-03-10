@@ -14,7 +14,7 @@ public class ClientHandler implements Runnable {
     private Socket socket;
     private ConcurrentHashMap<String,ClientHandler> userList;
     private Server server;
-    private String name;
+    public String name;
     private PrintWriter pw;
     private Scanner scanner;
 
@@ -83,11 +83,12 @@ public class ClientHandler implements Runnable {
 
 
     public void sendOnlineMesage() {
-
         pw.print("ONLINE#");
         userList.keySet().forEach(key ->pw.print(key+","));
         pw.println();
-
+        Serverthread stWorker = new Serverthread(userList);
+        Thread st = new Thread(stWorker);
+        st.start();
     }
 
     private boolean commandHandler(String msg) {
