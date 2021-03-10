@@ -3,9 +3,6 @@ package server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -81,6 +78,11 @@ public class ClientHandler implements Runnable {
         pw.println("MESSAGE#" + senderName + "#" + message);
     }
 
+    /*public void messageToSpecific(String message){
+
+
+    }*/
+
 
     public void sendOnlineMesage() {
 
@@ -115,12 +117,12 @@ public class ClientHandler implements Runnable {
                     if (argument.equals("*")) {
                         server.sendToAllUser(message, name);
                     } else {
-                        String[] parts = argument.split(",");
-                        if (parts.length == 0) {
+                        /*String[] parts = argument.split(",");*/
+                        /*if (parts.length == 0) {*/
+                            server.sendToSpecificUser(message, name, argument);
+                        /*} else {
                             server.sendToSpecificUsers(message, name);
-                        } else {
-                            server.sendToSpecificUsers(message, name);
-                        }
+                        }*/
                     }
                     break;
                 default:
