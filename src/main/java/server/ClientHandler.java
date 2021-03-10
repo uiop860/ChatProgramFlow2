@@ -14,7 +14,7 @@ public class ClientHandler implements Runnable {
     private Socket socket;
     private Server server;
 
-    private ConcurrentHashMap<String, ClientHandler> userList; //=new ConcurrentHashMap<>(10);
+    private ConcurrentHashMap<String, ClientHandler> userList;
 
     private String name = "noone"; //default name, before client chooses it
 

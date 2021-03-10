@@ -1,7 +1,6 @@
 package server;
 
 
-
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -28,7 +27,7 @@ class sThread implements Runnable {
     }
 
 
-    public  void sendToAllUser(String message, String name) {
+    public void sendToAllUser(String message, String name) {
 
         userList.values().forEach(clientHandler -> {
             clientHandler.messageToAll(message, name);
@@ -36,17 +35,12 @@ class sThread implements Runnable {
 
     }
 
-    public  void sendOnlineMessage() {
+    public void sendOnlineMessage() {
 
-        userList.values().forEach(clientHandler -> {
-            try {
-                clientHandler.sendOnlineMesage();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
+        userList.values().forEach(clientHandler -> { clientHandler.sendOnlineMesage();}
+    );
 
-    }
+}
 
     public void sendToSpecificUser(String message, String name, String users) {
 
