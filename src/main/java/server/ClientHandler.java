@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -12,8 +13,11 @@ public class ClientHandler implements Runnable {
 
     private Socket socket;
     private Server server;
+
     private ConcurrentHashMap<String, ClientHandler> userList; //=new ConcurrentHashMap<>(10);
-    public String name;
+
+    private String name = "noone"; //default name, before client chooses it
+
     private PrintWriter pw;
     private Scanner scanner;
     sThread serverThread;
@@ -45,12 +49,18 @@ public class ClientHandler implements Runnable {
         startworker();
         //System.out.println(userList.keySet());
         boolean keepRunning = true;
-        boolean userConnected;
+        boolean userConnected = false;
         pw = new PrintWriter(socket.getOutputStream(), true);
         scanner = new Scanner(socket.getInputStream());
 
-        pw.println("Indtast CONNECT#XXXX");
-        userConnected = connectClient(scanner.nextLine());
+        try{
+            pw.println("Indtast CONNECT#XXXX");
+            userConnected = connectClient(scanner.nextLine());
+
+        } catch (IllegalArgumentException | NoSuchElementException e){
+            e.printStackTrace();
+            pw.println("CLOSE#1");
+        }
 
         if (userConnected) {
             pw.println("Du er forbundet til chatrummet");
@@ -59,12 +69,15 @@ public class ClientHandler implements Runnable {
                     String message = scanner.nextLine();
                     keepRunning = commandHandler(message);
                 }
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException | NoSuchElementException e) {
                 e.printStackTrace();
                 pw.println("CLOSE#1");
             }
         }
-        userList.remove(name, this);
+        System.out.println("User disconnected");
+        if (userList.containsKey(name)){
+            userList.remove(name, this);
+        }
         socket.close();
     }
 
@@ -81,23 +94,20 @@ public class ClientHandler implements Runnable {
                 return true;
             } else {
                 pw.println("CLOSE#1");
-                throw new IllegalArgumentException("CLOSE#1");
+                return false;
             }
+        }else{
+            pw.println("CLOSE#1");
+            return false;
         }
-        return false;
     }
 
     public void messageToAll(String message, String name ) {
         pw.println("MESSAGE#" + name + "#" + message);
     }
 
-    /*public void messageToSpecific(String message){
 
-
-    }*/
-
-
-    public void sendOnlineMesage() throws InterruptedException {
+    public void sendOnlineMesage() {
         pw.print("ONLINE#");
         userList.keySet().forEach(key ->pw.print(key+","));
         pw.println();
@@ -128,12 +138,8 @@ public class ClientHandler implements Runnable {
                     if (argument.equals("*")) {
                         serverThread.sendToAllUser(message, name);
                     } else {
-                        /*String[] parts = argument.split(",");*/
-                        /*if (parts.length == 0) {*/
-                            serverThread.sendToSpecificUser(message, name, argument);
-                        /*} else {
-                            server.sendToSpecificUsers(message, name);
-                        }*/
+                        serverThread.sendToSpecificUser(message, name, argument);
+
                     }
                     break;
                 default:
