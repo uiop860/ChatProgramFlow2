@@ -3,6 +3,8 @@ package server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,14 +12,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ClientHandler implements Runnable {
 
     private Socket socket;
-    private ConcurrentHashMap<String,ClientHandler;
+    private ConcurrentHashMap<String,ClientHandler> userList;
     private Server server;
+    private String name;
     private PrintWriter pw;
     private Scanner scanner;
-    private String name;
 
     public ClientHandler(Socket socket, ConcurrentHashMap<String,ClientHandler> userList, Server server) throws IOException {
-
+        this.socket = socket;
+        this.server = server;
+        this.userList = userList;
     }
 
     @Override
@@ -50,7 +54,7 @@ public class ClientHandler implements Runnable {
                 pw.println("CLOSE#1");
             }
         }
-        userlist.remove(this, name);
+        userList.remove(name, this);
         socket.close();
     }
 
@@ -61,8 +65,8 @@ public class ClientHandler implements Runnable {
             String command = messageSplit[0];
             name = messageSplit[1];
             if (command.equals("CONNECT")) {
-                //Adds username to ArrayBlockingQueue in Server class
-                userList.put(this, name);
+                //Adds username to ConcurrentHashMap in Server class
+                userList.put(name, this);
                 server.sendOnlineMessage();
                 return true;
             } else {
@@ -81,11 +85,9 @@ public class ClientHandler implements Runnable {
     public void sendOnlineMesage() {
 
         pw.print("ONLINE#");
-        for (ClientHandler clientHandler : userList.keySet()) {
-            pw.print(userList.get(name));
-            pw.print(",");
-        }
+        userList.keySet().forEach(key ->pw.print(key+","));
         pw.println();
+
     }
 
     private boolean commandHandler(String msg) {

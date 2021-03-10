@@ -44,10 +44,11 @@ public class Server implements Runnable {
     }
 
     public void sendOnlineMessage() {
-        ClientHandler ch = userList.get(userList);
-        ch.sendOnlineMesage();
 
-       // userList.keySet().forEach(name -> {clienthandler.sendOnlineMesage();});
+        /*ConcurrentHashMap.KeySetView<String, ClientHandler> names = new ConcurrentHashMap.KeySetView<>();
+        names = userList.keySet();*/
+
+       userList.values().forEach(clientHandler -> {clientHandler.sendOnlineMesage();});
 
 
     }
