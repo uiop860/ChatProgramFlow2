@@ -3,6 +3,8 @@ package server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
@@ -82,12 +84,10 @@ public class ClientHandler implements Runnable {
 
     public void sendOnlineMesage() {
 
-        /*pw.print("ONLINE#");
-        for (ClientHandler clientHandler : userList.keySet()) {
-            pw.print(userList.get(name));
-            pw.print(",");
-        }
-        pw.println();*/
+        pw.print("ONLINE#");
+        userList.keySet().forEach(key ->pw.print(key+","));
+        pw.println();
+
     }
 
     private boolean commandHandler(String msg) {
