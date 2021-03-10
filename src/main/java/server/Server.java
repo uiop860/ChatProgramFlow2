@@ -10,45 +10,11 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Server implements Runnable {
+public class Server {
 
     private ServerSocket serverSocket;
     private Socket socket;
-    static ConcurrentHashMap<String,ClientHandler> userList = new ConcurrentHashMap<>(10);
-
-    @Override
-    public void run() {
-        sendOnlineMessage();
-    }
-
-    private void sendToAllUser() {
-    }
-
-
-    public void sendToSpecificUser(String message, String senderName, String users) {
-
-        String[] usersToSendTo = users.split(",");
-
-        for (int i = 0; i < usersToSendTo.length; i++){
-            if (userList.containsKey(usersToSendTo[i])){
-
-                userList.get(usersToSendTo[i]).messageToAll(message,senderName);
-
-            }
-        }
-    }
-
-    public void sendToAllUser(String message,String name) {
-
-        userList.values().forEach(clientHandler ->{clientHandler.messageToAll(message,name);});
-
-    }
-
-    public void sendOnlineMessage() {
-
-       userList.values().forEach(clientHandler -> {clientHandler.sendOnlineMesage();});
-
-    }
+    private ConcurrentHashMap<String, ClientHandler> userList = new ConcurrentHashMap<>(10);
 
 
     public void startSever(int port) throws IOException {
@@ -60,7 +26,7 @@ public class Server implements Runnable {
             System.out.println("Waiting for a client");
             socket = serverSocket.accept();      //Blocking call
             System.out.println("New client connected");
-            ClientHandler clientHandler = new ClientHandler(socket,userList,this);
+            ClientHandler clientHandler = new ClientHandler(socket, userList, this);
 
             Thread thread = new Thread(clientHandler);
             thread.start();

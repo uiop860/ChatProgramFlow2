@@ -15,7 +15,7 @@ public class ClientHandler implements Runnable {
     private String name = "noone"; //default name, before client chooses it
     private PrintWriter pw;
     private Scanner scanner;
-
+    sThread serverThread = new sThread(userList);
     public ClientHandler(Socket socket, ConcurrentHashMap<String,ClientHandler> userList, Server server) throws IOException {
         this.socket = socket;
         this.server = server;
@@ -65,6 +65,7 @@ public class ClientHandler implements Runnable {
         socket.close();
     }
 
+
     private boolean connectClient(String msg) {
         String[] messageSplit = msg.split("#");
 
@@ -74,7 +75,7 @@ public class ClientHandler implements Runnable {
             if (command.equals("CONNECT")) {
                 //Adds username to ConcurrentHashMap in Server class
                 userList.put(name, this);
-                server.sendOnlineMessage();
+                serverThread.sendOnlineMessage();
                 return true;
             } else {
                 pw.println("CLOSE#1");
@@ -86,16 +87,17 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public void messageToAll(String message, String senderName) {
-        pw.println("MESSAGE#" + senderName + "#" + message);
+    public void messageToAll(String message, String name ) {
+        pw.println("MESSAGE#" + name + "#" + message);
     }
 
     public void sendOnlineMesage() {
-
         pw.print("ONLINE#");
         userList.keySet().forEach(key ->pw.print(key+","));
         pw.println();
-
+        sThread stWorker = new sThread(userList);
+        Thread st = new Thread(stWorker);
+        st.start();
     }
 
     private boolean commandHandler(String msg) {
@@ -121,9 +123,10 @@ public class ClientHandler implements Runnable {
             switch (command) {
                 case "SEND":
                     if (argument.equals("*")) {
-                        server.sendToAllUser(message, name);
+                        serverThread.sendToAllUser(message, name);
                     } else {
-                        server.sendToSpecificUser(message, name, argument);
+                        serverThread.sendToSpecificUser(message, name, argument);
+
                     }
                     break;
                 default:
