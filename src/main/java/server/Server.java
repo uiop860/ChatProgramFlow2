@@ -13,9 +13,9 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Socket socket;
-    static ConcurrentHashMap<ClientHandler, String> userList = new ConcurrentHashMap<>(10);
 
-    static ConcurrentHashMap<String,ClientHandler> userLis = new ConcurrentHashMap<>(10);
+
+    static ConcurrentHashMap<String,ClientHandler> userList = new ConcurrentHashMap<>(10);
 
 
 
@@ -24,20 +24,26 @@ public class Server {
     public void sendToSpecificUsers(String message, String users) {
         String[] usersToSendTo = users.split(",");
         for(String user: usersToSendTo){
-            ClientHandler ch =  userLis.get(user);
+            ClientHandler ch =  userList.get(user);
             ch.messageToAll(message,users);
         }
     }
 
     public void sendToAllUser(String message,String name) {
+      ClientHandler ch = userList.get(name);
+      ch.sendOnlineMesage();
 
-        userList.keySet().forEach(clientHandler ->{clientHandler.messageToAll(message,name);});
+
+
+        //userList.keySet().forEach(clientHandler ->{clientHandler.messageToAll(message,name);});
 
     }
 
     public void sendOnlineMessage() {
+        ClientHandler ch = userList.get(userList);
+        ch.sendOnlineMesage();
 
-        userList.keySet().forEach(clientHandler -> {clientHandler.sendOnlineMesage();});
+       // userList.keySet().forEach(name -> {clienthandler.sendOnlineMesage();});
 
 
     }
@@ -51,7 +57,7 @@ public class Server {
             socket = serverSocket.accept();      //Blocking call
             System.out.println("New client connected");
 
-            ClientHandler clientHandler = new ClientHandler(socket, userList, this);
+            ClientHandler clientHandler = new ClientHandler(socket,userList,this);
 
             Thread thread = new Thread(clientHandler);
             thread.start();

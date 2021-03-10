@@ -10,16 +10,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ClientHandler implements Runnable {
 
     private Socket socket;
-    private ConcurrentHashMap<ClientHandler, String> userList;
+    private ConcurrentHashMap<String,ClientHandler;
     private Server server;
     private PrintWriter pw;
     private Scanner scanner;
     private String name;
 
-    public ClientHandler(Socket socket, ConcurrentHashMap<ClientHandler, String> userList, Server server) throws IOException {
-        this.socket = socket;
-        this.userList = userList;
-        this.server = server;
+    public ClientHandler(Socket socket, ConcurrentHashMap<String,ClientHandler> userList, Server server) throws IOException {
+
     }
 
     @Override
@@ -52,7 +50,7 @@ public class ClientHandler implements Runnable {
                 pw.println("CLOSE#1");
             }
         }
-        userList.remove(this, name);
+        userlist.remove(this, name);
         socket.close();
     }
 
@@ -84,7 +82,7 @@ public class ClientHandler implements Runnable {
 
         pw.print("ONLINE#");
         for (ClientHandler clientHandler : userList.keySet()) {
-            pw.print(userList.get(clientHandler));
+            pw.print(userList.get(name));
             pw.print(",");
         }
         pw.println();
@@ -112,7 +110,7 @@ public class ClientHandler implements Runnable {
 
             switch (command) {
                 case "SEND":
-                    if (argument.equals("*")) {
+                    if (!argument.equals("*")) {
                         server.sendToAllUser(message, name);
                     } else {
                         String[] parts = argument.split(",");
