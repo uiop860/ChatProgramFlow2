@@ -14,7 +14,7 @@ public class ClientHandler implements Runnable {
     public String name;
     private PrintWriter pw;
     private Scanner scanner;
-
+    sThread serverThread = new sThread(userList);
     public ClientHandler(Socket socket, ConcurrentHashMap<String,ClientHandler> userList, Server server) throws IOException {
         this.socket = socket;
         this.server = server;
@@ -55,6 +55,7 @@ public class ClientHandler implements Runnable {
         socket.close();
     }
 
+
     private boolean connectClient(String msg) {
         String[] messageSplit = msg.split("#");
 
@@ -64,7 +65,7 @@ public class ClientHandler implements Runnable {
             if (command.equals("CONNECT")) {
                 //Adds username to ConcurrentHashMap in Server class
                 userList.put(name, this);
-                server.sendOnlineMessage();
+                serverThread.sendOnlineMessage();
                 return true;
             } else {
                 pw.println("CLOSE#1");
@@ -74,8 +75,8 @@ public class ClientHandler implements Runnable {
         return false;
     }
 
-    public void messageToAll(String message, String senderName) {
-        pw.println("MESSAGE#" + senderName + "#" + message);
+    public void messageToAll(String message, String name ) {
+        pw.println("MESSAGE#" + name + "#" + message);
     }
 
     /*public void messageToSpecific(String message){
@@ -88,7 +89,7 @@ public class ClientHandler implements Runnable {
         pw.print("ONLINE#");
         userList.keySet().forEach(key ->pw.print(key+","));
         pw.println();
-        Serverthread stWorker = new Serverthread(userList);
+        sThread stWorker = new sThread(userList);
         Thread st = new Thread(stWorker);
         st.start();
     }
@@ -116,11 +117,11 @@ public class ClientHandler implements Runnable {
             switch (command) {
                 case "SEND":
                     if (argument.equals("*")) {
-                        server.sendToAllUser(message, name);
+                        serverThread.sendToAllUser(message, name);
                     } else {
                         /*String[] parts = argument.split(",");*/
                         /*if (parts.length == 0) {*/
-                            server.sendToSpecificUser(message, name, argument);
+                            serverThread.sendToSpecificUser(message, name, argument);
                         /*} else {
                             server.sendToSpecificUsers(message, name);
                         }*/
