@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -19,11 +20,16 @@ public class Server  {
 
 
 
-    public void sendToSpecificUsers(String message, String users) {
+    public void sendToSpecificUser(String message, String senderName, String users) {
+
         String[] usersToSendTo = users.split(",");
-        for(String user: usersToSendTo){
-            ClientHandler ch =  userList.get(user);
-            ch.messageToAll(message,users);
+
+        for (int i = 0; i < usersToSendTo.length; i++){
+            if (userList.containsKey(usersToSendTo[i])){
+
+                userList.get(usersToSendTo[i]).messageToAll(message,senderName);
+
+            }
         }
     }
 
@@ -44,8 +50,5 @@ public class Server  {
             thread.start();
 
         }
-
     }
-
-
 }
