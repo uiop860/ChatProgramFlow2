@@ -6,9 +6,9 @@
 #SERVER_NAME below MUST mach the DIRECTORY created on your droplet in the /var folder
 SERVER_NAME="chat-server"
 
-DROPLET_URL="138.68.100.110"
+DROPLET_URL="192.168.0.32"
 # Change the root below to the non-root user you have setup:
-DROPLET_USER="root"
+DROPLET_USER="oliver"
 
 
 echo "##############################"
@@ -25,4 +25,4 @@ echo "##############################"
 echo "Deploying The project..."
 echo "##############################"
 
-scp -r ./deploy/* $DROPLET_USER@$DROPLET_URL:/var/$SERVER_NAME
+scp -r ./deploy/* $DROPLET_USER@$DROPLET_URL:/opt/$SERVER_NAME
