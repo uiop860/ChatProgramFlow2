@@ -1,5 +1,7 @@
 package server;
 
+
+import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MessageHandler {
@@ -12,20 +14,17 @@ public class MessageHandler {
     }
 
     public boolean commandHandler(String msg, String myName) {
-
         String[] messageSplit = msg.split("#");
 
         if (messageSplit.length == 1) {
             String command = messageSplit[0];
             switch (command) {
                 case "CLOSE":
-                    //Stops while loop and closes connection
+                    myClientHandler.writeToClient("CLOSE#0");
                     return false;
                 default:
-                    myClientHandler.writeToClient("CLOSE#1");
-                    throw new IllegalArgumentException("CLOSE#1");
+                    throw new IllegalArgumentException();
             }
-
         } else if (messageSplit.length == 3) {
             String command = messageSplit[0];
             String argument = messageSplit[1];
@@ -40,8 +39,8 @@ public class MessageHandler {
                     }
                     break;
                 default:
-                    myClientHandler.writeToClient("CLOSE#1");
-                    throw new IllegalArgumentException("CLOSE#1");
+
+                    throw new IllegalArgumentException();
 
             }
         }
@@ -49,23 +48,22 @@ public class MessageHandler {
     }
 
     public void sendToAllUser(String message, String name) {
-
         userList.values().forEach(clientHandler -> {
             clientHandler.messageToAll(message, name);
         });
     }
 
     public void sendOnlineMessage() {
-
         userList.values().forEach(clientHandler -> {
-                    clientHandler.sendOnlineMesage();
-                }
-        );
+            clientHandler.sendOnlineMesage();
+        });
     }
 
     public void sendToSpecificUser(String message, String name, String user) {
-
-        if (userList.containsKey(user)) {userList.get(user).messageToAll(message, name);
+        if (userList.containsKey(user)){
+            userList.get(user).messageToAll(message, name);
+        } else {
+            throw new NoSuchElementException();
         }
     }
 }

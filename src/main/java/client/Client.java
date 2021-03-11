@@ -1,4 +1,4 @@
-package Client;
+package client;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,7 +23,6 @@ public class Client {
         pw = new PrintWriter(socket.getOutputStream(),true);
 
         Scanner keyboard = new Scanner(System.in);
-
         ServerReader serverReader = new ServerReader(socket.getInputStream());
         Thread thread = new Thread(serverReader);
         thread.start();
@@ -33,7 +32,6 @@ public class Client {
             String messageToSend = keyboard.nextLine(); //Blocking call
                 pw.println(messageToSend);
         }
-
         socket.close();
         System.exit(0);
     }

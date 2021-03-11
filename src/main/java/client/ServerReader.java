@@ -1,4 +1,4 @@
-package Client;
+package client;
 
 import java.io.InputStream;
 import java.util.NoSuchElementException;
@@ -29,7 +29,6 @@ public class ServerReader implements Runnable {
                 } else {
                     System.out.println(message);
                 }
-
             }catch (NoSuchElementException ignored){
             }
         }
