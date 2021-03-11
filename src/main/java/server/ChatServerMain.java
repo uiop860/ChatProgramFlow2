@@ -2,7 +2,8 @@ package server;
 
 import java.io.IOException;
 
-public class ChatServerMain {
+public class
+ChatServerMain {
 
     public static void main(String[] args) throws IOException {
         int port = 2345;

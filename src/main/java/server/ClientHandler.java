@@ -92,7 +92,7 @@ public class ClientHandler implements Runnable {
     }
 
     public void sendOnlineMesage() {
-        writeToClient("ONLINE#");
+        pw.print("ONLINE#");
         userList.keySet().forEach(key -> pw.print(key + ","));
         pw.println();
     }

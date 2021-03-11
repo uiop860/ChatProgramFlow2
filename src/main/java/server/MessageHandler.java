@@ -1,5 +1,6 @@
 package server;
 
+
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -38,7 +39,9 @@ public class MessageHandler {
                     }
                     break;
                 default:
+
                     throw new IllegalArgumentException();
+
             }
         }
         return true;

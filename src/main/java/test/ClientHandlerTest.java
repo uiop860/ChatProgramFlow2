@@ -24,8 +24,7 @@ class ClientHandlerTest {
         MyRunnable testrunnable = new MyRunnable();
         Thread testThread = new Thread(testrunnable);
         testThread.start();
-        int port = 8088;
-        String logFile = "log.txt";
+        int port = 2345;
         Server server = new Server(port, 10);
         server.runServer();
 
