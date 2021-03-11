@@ -10,16 +10,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ClientHandler implements Runnable {
 
     private Socket socket;
-    private Server server;
     private MessageHandler messageHandler;
     private ConcurrentHashMap<String, ClientHandler> userList;
     private String name = "noone"; //default name, before client chooses it
     private PrintWriter pw;
     private Scanner scanner;
 
-    public ClientHandler(Socket socket, ConcurrentHashMap<String, ClientHandler> userList, Server server) throws IOException {
-        this.server = server;
-        this.socket = socket;
+    public ClientHandler(Socket socket, ConcurrentHashMap<String, ClientHandler> userList) throws IOException {
+                this.socket = socket;
         this.userList = userList;
         this.messageHandler = new MessageHandler(userList, this);
     }
@@ -41,7 +39,7 @@ public class ClientHandler implements Runnable {
 
         try {
             writeToClient("Indtast CONNECT#XXXX");
-            userConnected = connectClient(scanner.nextLine());
+            userConnected = connectClient();
         } catch (IllegalArgumentException | NoSuchElementException e) {
             e.printStackTrace();
             writeToClient("CLOSE#1");
@@ -69,22 +67,28 @@ public class ClientHandler implements Runnable {
         socket.close();
     }
 
-    private boolean connectClient(String msg) {
-        String[] messageSplit = msg.split("#");
-        if (messageSplit.length == 2) {
-            String command = messageSplit[0];
-            name = messageSplit[1];
-            if (command.equals("CONNECT")) {
-                //Adds username to ConcurrentHashMap in Server class
-                userList.put(name, this);
-                messageHandler.sendOnlineMessage();
-                return true;
-            } else {
-                throw new IllegalArgumentException();
-            }
-        } else {
-            throw new IllegalArgumentException();
-        }
+    private boolean connectClient() {
+     while(true){
+        String msg = scanner.nextLine();
+         String[] messageSplit = msg.split("#");
+         if (messageSplit.length == 2) {
+             String command = messageSplit[0];
+             name = messageSplit[1];
+             if (command.equals("CONNECT")) {
+                 //Adds username to ConcurrentHashMap in Server class
+                 userList.put(name, this);
+                 messageHandler.sendOnlineMessage();
+                 return true;
+             } else {
+               writeToClient("not like this"); // throw new IllegalArgumentException();
+             }
+         } else {
+         writeToClient("Text to CONNECT#'NAME'to access");
+            // throw new IllegalArgumentException();
+         }
+
+     }
+
     }
 
     public void messageToAll(String message, String name) {

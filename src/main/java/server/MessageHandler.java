@@ -23,7 +23,8 @@ public class  MessageHandler {
                     myClientHandler.writeToClient("CLOSE#0");
                     return false;
                 default:
-                    throw new IllegalArgumentException();
+                    myClientHandler.writeToClient("Unknown command");
+
             }
         } else if (messageSplit.length == 3) {
             String command = messageSplit[0];
@@ -40,7 +41,7 @@ public class  MessageHandler {
                     break;
                 default:
 
-                    throw new IllegalArgumentException();
+                    myClientHandler.writeToClient("unknown command");
 
             }
         }

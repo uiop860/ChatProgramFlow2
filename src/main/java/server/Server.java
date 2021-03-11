@@ -17,22 +17,27 @@ public class Server {
     private int port;
     public ConcurrentHashMap<String, ClientHandler> userList;
 
-    public Server(int port, int capacity) throws IOException {
+    public Server(int port) throws IOException {
         this.port=port;
         serverSocket = new ServerSocket(port);
-        userList = new ConcurrentHashMap<>(capacity);
+        userList = new ConcurrentHashMap<>();
     }
+
 
     public void runServer() throws IOException {
         System.out.println("Server started, listening on : " + port);
         while (true) {
             System.out.println("Waiting for a client");
-            socket = serverSocket.accept();      //Blocking call
-            System.out.println("New client connected");
+            socket = serverSocket.accept(); //Blocking call
 
-            ClientHandler clientHandler = new ClientHandler(socket, userList, this);
-            Thread thread = new Thread(clientHandler);
-            thread.start();
+                System.out.println("New client connected");
+
+                ClientHandler clientHandler = new ClientHandler(socket, userList);
+                Thread thread = new Thread(clientHandler);
+                thread.start();
+
+
+
         }
     }
 }

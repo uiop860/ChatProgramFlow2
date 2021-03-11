@@ -25,7 +25,7 @@ class ClientHandlerTest {
         Thread testThread = new Thread(testrunnable);
         testThread.start();
         int port = 2345;
-        Server server = new Server(port, 10);
+        Server server = new Server(port);
         server.runServer();
 
 
