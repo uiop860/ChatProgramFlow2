@@ -91,7 +91,7 @@ public class ClientHandler implements Runnable {
 
     }
 
-    public void messageToAll(String message, String name) {
+    public void message(String message, String name) {
         pw.println("MESSAGE#" + name + "#" + message);
     }
 

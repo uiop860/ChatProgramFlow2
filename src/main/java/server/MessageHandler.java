@@ -1,8 +1,6 @@
 package server;
 
 
-
-
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -47,9 +45,6 @@ public class MessageHandler {
                         }
                         break;
 
-
-
-
                     }
                 default:
                     myClientHandler.writeToClient("unknown command");
@@ -59,35 +54,39 @@ public class MessageHandler {
         }
         return true;
     }
-        public void sendToUsers (String message, String sender, String[]receivers){
 
-            for (int i = 0; i < receivers.length; i++) {
-                if (userList.containsKey(receivers[i])) {
+    public void sendToUsers(String message, String sender, String[] receivers) {
 
-                    userList.get(receivers[i]).messageToAll(message, sender);
+        for (int i = 0; i < receivers.length; i++) {
+            if (userList.containsKey(receivers[i])) {
 
-                }
+                userList.get(receivers[i]).message(message, sender);
+
             }
         }
-
-        public void sendToAllUser (String message, String name){
-            userList.values().forEach(clientHandler -> {
-                clientHandler.messageToAll(message, name);
-            });
-        }
-
-        public void sendOnlineMessage () {
-
-            userList.values().forEach(clientHandler -> {
-                clientHandler.sendOnlineMesage();
-            });
-        }
-
-        public void sendToSpecificUser (String message, String name, String user){
-            if (userList.containsKey(user)) {
-                userList.get(user).messageToAll(message, name);
-            } else {
-                throw new NoSuchElementException();
-            }
-        }
+        myClientHandler.writeToClient("Message Sent to " + receivers.length + "users.");
     }
+
+    public void sendToAllUser(String message, String name) {
+        userList.values().forEach(clientHandler -> {
+            clientHandler.message(message, name);
+        });
+        myClientHandler.writeToClient("Message Sent to all users.");
+    }
+
+    public void sendOnlineMessage() {
+
+        userList.values().forEach(clientHandler -> {
+            clientHandler.sendOnlineMesage();
+        });
+    }
+
+    public void sendToSpecificUser(String message, String name, String user) {
+        if (userList.containsKey(user)) {
+            userList.get(user).message(message, name);
+        } else {
+            myClientHandler.writeToClient("User does not exist");
+        }
+        myClientHandler.writeToClient("Message Sent to " + user);
+    }
+}
