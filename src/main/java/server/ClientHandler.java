@@ -13,11 +13,8 @@ public class ClientHandler implements Runnable {
     private Socket socket;
     private Server server;
     private MessageHandler serverhandler;
-
     private ConcurrentHashMap<String, ClientHandler> userList;
-
     private String name = "noone"; //default name, before client chooses it
-
     private PrintWriter pw;
     private Scanner scanner;
 
@@ -28,7 +25,6 @@ public class ClientHandler implements Runnable {
         this.userList = userList;
         this.serverhandler = new MessageHandler(userList, this);
     }
-
 
     public void writeToClient(String message) {
         pw.println(message);
@@ -42,7 +38,6 @@ public class ClientHandler implements Runnable {
             e.printStackTrace();
         }
     }
-
 
     private void clientHandler() throws IOException {
         boolean keepRunning = true;
@@ -102,8 +97,6 @@ public class ClientHandler implements Runnable {
     public void messageToAll(String message, String name) {
         writeToClient("MESSAGE#" + name + "#" + message);
     }
-
-
     public void sendOnlineMesage() {
         writeToClient("ONLINE#");
         userList.keySet().forEach(key -> pw.print(key + ","));

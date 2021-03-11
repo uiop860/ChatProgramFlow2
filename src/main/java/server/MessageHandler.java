@@ -4,16 +4,16 @@ import java.io.PrintWriter;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MessageHandler {
-   private ConcurrentHashMap<String, ClientHandler> userList;
-   private ClientHandler myClientHandler;
-
+    private ConcurrentHashMap<String, ClientHandler> userList;
+    private ClientHandler myClientHandler;
+    public String argument;
 
     public MessageHandler(ConcurrentHashMap<String, ClientHandler> userList, ClientHandler clientHandler) {
         this.userList = userList;
         this.myClientHandler = clientHandler;
     }
 
-    public boolean commandHandler(String msg,String myName) {
+    public boolean commandHandler(String msg, String myName) {
 
         String[] messageSplit = msg.split("#");
 
@@ -49,24 +49,11 @@ public class MessageHandler {
         return true;
     }
 
-    public void handleMessage(String message, String name, String argument) {
-        String[] usersToSendTo = argument.split(",");
-        if (usersToSendTo.length > 1) {
-            sendToUsers(message, name, usersToSendTo);
-        } else if (usersToSendTo.length == 1) {
-            sendToSpecificUser(message, name, argument);
-        } else if (usersToSendTo.length <= 0) {
-            sendToSpecificUser("Unknown argument", "SYSTEM", name);
-        }
-
-    }
-
     public void sendToAllUser(String message, String name) {
 
         userList.values().forEach(clientHandler -> {
             clientHandler.messageToAll(message, name);
         });
-
     }
 
     public void sendOnlineMessage() {
@@ -75,30 +62,11 @@ public class MessageHandler {
                     clientHandler.sendOnlineMesage();
                 }
         );
-
     }
-
-    public void sendToUsers(String message, String sender, String[] receivers) {
-
-        for (int i = 0; i < receivers.length; i++) {
-            if (userList.containsKey(receivers[i])) {
-
-                userList.get(receivers[i]).messageToAll(message, sender);
-
-            }
-        }
-    }
-
 
     public void sendToSpecificUser(String message, String name, String user) {
 
-        if (userList.containsKey(user)) {
-
-            userList.get(user).messageToAll(message, name);
-
+        if (userList.containsKey(user)) {userList.get(user).messageToAll(message, name);
         }
-
     }
-
-
 }

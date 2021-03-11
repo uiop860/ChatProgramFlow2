@@ -9,7 +9,6 @@ public class ChatServerMain {
         int port = 2345;
         int capacity = 10;
 
-
         if (args.length > 0) {
             try {
                 if (args.length == 1) {
@@ -21,7 +20,6 @@ public class ChatServerMain {
                 System.out.println("Illegal inputs provided when starting the server!");
                 return;
             }
-
         }
         Server server = new Server(port, capacity);
         server.runServer();

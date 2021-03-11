@@ -17,7 +17,6 @@ public class Server {
     private int port;
     public ConcurrentHashMap<String, ClientHandler> userList;
 
-
     public Server(int port, int capacity) throws IOException {
         this.port=port;
         serverSocket = new ServerSocket(port);
@@ -35,6 +34,5 @@ public class Server {
             thread.start();
 
         }
-
     }
 }
