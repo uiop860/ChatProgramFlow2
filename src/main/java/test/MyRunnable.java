@@ -1,4 +1,4 @@
-package Test;
+package test;
 
 import org.junit.jupiter.api.Assertions;
 
@@ -41,18 +41,8 @@ public class MyRunnable implements Runnable {
             String received4 = scanner.nextLine();
             Assertions.assertEquals("MESSAGE#Testbruger#Hej med dig", received4);
             System.out.println("Test 4 passed");
-
-
-          //  pw.println("Den burde skrive Close#1");
-           // String received5 = scanner.nextLine();
-            //Assertions.assert("CLOESE#1", received5);
-
-
-
-
-
-
             System.out.println("ALL test passed");
+
         } catch (IOException e) {
             e.printStackTrace();
         }

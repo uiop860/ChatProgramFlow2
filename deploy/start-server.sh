@@ -1,3 +1,3 @@
 #!/bin/sh
 
-java -cp chat-server.jar server.ChatServerMain localhost 2345
+java -cp chat-server.jar server.ChatServerMain 2345
