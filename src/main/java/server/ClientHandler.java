@@ -88,7 +88,7 @@ public class ClientHandler implements Runnable {
     }
 
     public void messageToAll(String message, String name) {
-        writeToClient("MESSAGE#" + name + "#" + message);
+        pw.println("MESSAGE#" + name + "#" + message);
     }
 
     public void sendOnlineMesage() {
