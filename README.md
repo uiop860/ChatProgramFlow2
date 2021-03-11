@@ -29,6 +29,6 @@
 ## Who has done what
 Vi har hver dag mødtes kl 9:00, hvor vi har været på opkald med hinanden og snakket omkring opgaven. Vi kan se ud fra 
 commit historikken at alle er enten fra Sebastian eller Oliver. Det betyder ikke at Rasmus ikke har lavet 
-noget. Rasmus har været rigtig god til at at hjælpe hvis man er kørt fast og ikke kan komme videre. Jeg kan ikke 
-fortælle hvad Thias har lavet, da jeg ikke ved det.
+noget. Rasmus har været rigtig god til at at hjælpe hvis man er kørt fast og ikke kan komme videre. Vi kan ikke 
+fortælle hvad Thias har lavet, da vi ikke ved det.
 ![WorkDone](src/main/resources/workDone.png)
