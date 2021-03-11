@@ -29,7 +29,6 @@ public class ServerReader implements Runnable {
                 } else {
                     System.out.println(message);
                 }
-
             }catch (NoSuchElementException ignored){
             }
         }

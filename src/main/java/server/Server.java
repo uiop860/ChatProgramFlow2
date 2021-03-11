@@ -29,10 +29,10 @@ public class Server {
             System.out.println("Waiting for a client");
             socket = serverSocket.accept();      //Blocking call
             System.out.println("New client connected");
+
             ClientHandler clientHandler = new ClientHandler(socket, userList, this);
             Thread thread = new Thread(clientHandler);
             thread.start();
-
         }
     }
 }

@@ -7,7 +7,6 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class ClientHandler implements Runnable {
 
     private Socket socket;
@@ -18,16 +17,11 @@ public class ClientHandler implements Runnable {
     private PrintWriter pw;
     private Scanner scanner;
 
-
     public ClientHandler(Socket socket, ConcurrentHashMap<String, ClientHandler> userList, Server server) throws IOException {
         this.server = server;
         this.socket = socket;
         this.userList = userList;
         this.serverhandler = new MessageHandler(userList, this);
-    }
-
-    public void writeToClient(String message) {
-        pw.println(message);
     }
 
     @Override
@@ -48,7 +42,6 @@ public class ClientHandler implements Runnable {
         try {
             writeToClient("Indtast CONNECT#XXXX");
             userConnected = connectClient(scanner.nextLine());
-
         } catch (IllegalArgumentException | NoSuchElementException e) {
             e.printStackTrace();
             writeToClient("CLOSE#1");
@@ -61,9 +54,12 @@ public class ClientHandler implements Runnable {
                     String message = scanner.nextLine();
                     keepRunning = serverhandler.commandHandler(message,name);
                 }
-            } catch (IllegalArgumentException | NoSuchElementException e) {
+            } catch (IllegalArgumentException e) {
                 e.printStackTrace();
                 writeToClient("CLOSE#1");
+            } catch (NoSuchElementException e){
+                e.printStackTrace();
+                writeToClient("CLOSE#2");
             }
         }
         System.out.println("User disconnected");
@@ -72,7 +68,6 @@ public class ClientHandler implements Runnable {
         }
         socket.close();
     }
-
 
     private boolean connectClient(String msg) {
         String[] messageSplit = msg.split("#");
@@ -85,21 +80,24 @@ public class ClientHandler implements Runnable {
                 serverhandler.sendOnlineMessage();
                 return true;
             } else {
-                writeToClient("CLOSE#1");
-                return false;
+                throw new IllegalArgumentException();
             }
         } else {
-            writeToClient("CLOSE#1");
-            return false;
+            throw new IllegalArgumentException();
         }
     }
 
     public void messageToAll(String message, String name) {
         writeToClient("MESSAGE#" + name + "#" + message);
     }
+
     public void sendOnlineMesage() {
         writeToClient("ONLINE#");
         userList.keySet().forEach(key -> pw.print(key + ","));
         pw.println();
+    }
+
+    public void writeToClient(String message) {
+        pw.println(message);
     }
 }
