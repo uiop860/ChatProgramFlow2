@@ -1,7 +1,13 @@
-## Quick Start Project for the Chat - Server
+This chat program has a chatsver and a chat client.
 
-Simple Maven Project which can be used for the Chat-CA 
 
-Using this project as your start code will make deploying your server (the jar-file) to Digital Ocean a "no brainer" if you follow the instructions given here
+The server icludes the following classes: Clientservermain,Clienthandler,Messagehandler 
 
-https://docs.google.com/document/d/1aE1MlsTAAYksCPpI4YZu-I_uLYqZssoobsmA-GHmiHk/edit?usp=sharing 
+* ChatServermain initializes the serverclass and calls runserver
+
+* Server creates a construtor for the the server and have the run server method in body - the runServer method initializes the clienthandler and call a new thread everytime a new client logs in to the system. 
+
+* ClientHandler run the userinput for each clienthandler thread connect to the system, and initializes the MessageHandler to handle the incomming trafic 
+The Clienthandler also thorws exeptions with illegal outputs 
+
+*The messagehandler spilts the command/argumts/message and direct the message to the right person 

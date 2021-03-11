@@ -17,8 +17,6 @@ public class MyRunnable implements Runnable {
     public void run() {
 
 
-
-
         try {
             String ip = "localhost";
             int port = 2345;

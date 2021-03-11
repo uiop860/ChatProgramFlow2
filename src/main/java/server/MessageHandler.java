@@ -54,6 +54,7 @@ public class    MessageHandler {
     }
 
     public void sendOnlineMessage() {
+
         userList.values().forEach(clientHandler -> {
             clientHandler.sendOnlineMesage();
         });

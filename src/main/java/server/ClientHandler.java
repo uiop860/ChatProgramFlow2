@@ -11,7 +11,7 @@ public class ClientHandler implements Runnable {
 
     private Socket socket;
     private Server server;
-    private MessageHandler serverhandler;
+    private MessageHandler messageHandler;
     private ConcurrentHashMap<String, ClientHandler> userList;
     private String name = "noone"; //default name, before client chooses it
     private PrintWriter pw;
@@ -21,7 +21,7 @@ public class ClientHandler implements Runnable {
         this.server = server;
         this.socket = socket;
         this.userList = userList;
-        this.serverhandler = new MessageHandler(userList, this);
+        this.messageHandler = new MessageHandler(userList, this);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ClientHandler implements Runnable {
             try {
                 while (keepRunning) {
                     String message = scanner.nextLine();
-                    keepRunning = serverhandler.commandHandler(message,name);
+                    keepRunning = messageHandler.commandHandler(message,name);
                 }
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
@@ -77,7 +77,7 @@ public class ClientHandler implements Runnable {
             if (command.equals("CONNECT")) {
                 //Adds username to ConcurrentHashMap in Server class
                 userList.put(name, this);
-                serverhandler.sendOnlineMessage();
+                messageHandler.sendOnlineMessage();
                 return true;
             } else {
                 throw new IllegalArgumentException();
@@ -92,7 +92,8 @@ public class ClientHandler implements Runnable {
     }
 
     public void sendOnlineMesage() {
-        pw.print("ONLINE#");
+
+        pw.print("\nONLINE#");
         userList.keySet().forEach(key -> pw.print(key + ","));
         pw.println();
     }
