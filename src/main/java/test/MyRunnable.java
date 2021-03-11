@@ -11,6 +11,8 @@ import java.util.Scanner;
 public class MyRunnable implements Runnable {
 
 
+
+
     @Override
     public void run() {
 
@@ -28,27 +30,19 @@ public class MyRunnable implements Runnable {
             String received = scanner.nextLine();
             Assertions.assertEquals("Indtast CONNECT#XXXX", received);
             System.out.println("Test 1 passed");
-            pw.println("CONNECT#Seb");
+            pw.println("CONNECT#Testbruger");
             String received1 = scanner.nextLine();
-            Assertions.assertEquals("ONLINE#Seb,", received1);
+            Assertions.assertEquals("ONLINE#Testbruger,", received1);
             System.out.println("Test 2 passed");
             String received2 = scanner.nextLine();
             Assertions.assertEquals("Du er forbundet til chatrummet", received2);
             System.out.println("Test 3 passed");
             pw.println("SEND#*#Hej med dig");
             String received4 = scanner.nextLine();
-            Assertions.assertEquals("MESSAGE#Seb#Hej med dig", received4);
+            Assertions.assertEquals("MESSAGE#Testbruger#Hej med dig", received4);
             System.out.println("Test 4 passed");
-            pw.println("Den burde skrive Close#1");
-            String received5 = scanner.nextLine();
-            Assertions.assertEquals("CLOESE#1", received5);
-
-
-
-
-
-
             System.out.println("ALL test passed");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
