@@ -7,7 +7,6 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class ClientHandler implements Runnable {
 
     private Socket socket;
@@ -98,7 +97,7 @@ public class ClientHandler implements Runnable {
         writeToClient("MESSAGE#" + name + "#" + message);
     }
     public void sendOnlineMesage() {
-        writeToClient("ONLINE#");
+        pw.print("ONLINE#");
         userList.keySet().forEach(key -> pw.print(key + ","));
         pw.println();
     }

@@ -1,12 +1,10 @@
 package server;
 
-import java.io.PrintWriter;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MessageHandler {
     private ConcurrentHashMap<String, ClientHandler> userList;
     private ClientHandler myClientHandler;
-    public String argument;
 
     public MessageHandler(ConcurrentHashMap<String, ClientHandler> userList, ClientHandler clientHandler) {
         this.userList = userList;
@@ -44,6 +42,7 @@ public class MessageHandler {
                 default:
                     myClientHandler.writeToClient("CLOSE#1");
                     throw new IllegalArgumentException("CLOSE#1");
+
             }
         }
         return true;
