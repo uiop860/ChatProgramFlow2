@@ -1,1 +1,0 @@
-java -cp chat-server.jar client.ChatClientMain
