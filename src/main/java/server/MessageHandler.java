@@ -4,7 +4,7 @@ package server;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class MessageHandler {
+public class    MessageHandler {
     private ConcurrentHashMap<String, ClientHandler> userList;
     private ClientHandler myClientHandler;
 
